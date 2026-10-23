@@ -1,8 +1,8 @@
-import { registerInput } from "../schema/auth.schema";
-import { createUser, findByEmail } from "../repositories/user.repo";
+import { loginInput, registerInput } from "../schema/auth.schema";
+import { createUser, findByEmail, findById } from "../repositories/user.repo";
 import { AppError } from "shared";
 import bcrypt from "bcryptjs";
-
+import { createJwtToken } from "../utils/jwt";
 export async function createUserService(input: registerInput) {
   const existing = await findByEmail(input.email);
   if (existing) {
@@ -15,5 +15,30 @@ export async function createUserService(input: registerInput) {
     password_hash,
     role: "user",
   });
+  return user;
+}
+
+export async function loginUserService(
+  input: loginInput,
+): Promise<string | null> {
+  const user = await findByEmail(input.email);
+  if (!user) {
+    throw new AppError(401, "Invalid email or password");
+  }
+  const valid = await bcrypt.compare(input.password, user.password_hash);
+  if (!valid) {
+    throw new AppError(401, "Invalid email or password");
+  }
+
+  // create the jwt token
+  const token = createJwtToken({ userId: user.id, role: user.role });
+  return token;
+}
+
+export async function getMeService(userId: string) {
+  const user = await findById(userId);
+  if (!user) {
+    throw new AppError(404, "User not found");
+  }
   return user;
 }
