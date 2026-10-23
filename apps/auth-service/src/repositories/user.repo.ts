@@ -28,3 +28,12 @@ export async function findByEmail(email: string): Promise<User | null> {
   );
   return result.rows[0] ?? null;
 }
+
+export async function findById(userId: string): Promise<User | null> {
+  const pool = CreatePool();
+  const result = await pool.query<User>(
+    `SELECT id, email, name, password_hash, role, created_at FROM users WHERE id=$1`,
+    [userId],
+  );
+  return result.rows[0] ?? null;
+}
