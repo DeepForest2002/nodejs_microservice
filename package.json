@@ -1,0 +1,22 @@
+{
+  "name": "nodejs_microservices",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "install:auth": "npm install --workspace=@nodejs-microservices/auth-service",
+    "dev:auth": "npm run dev -w apps/auth-service",
+    "dev:api-geteway": "npm run dev -w apps/api-gateway",
+    "dbmate:up": "npx dbmate up"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "dotenv": "^18.0.8"
+  },
+  "devDependencies": {
+    "dbmate": "^2.36.0"
+  }
+}

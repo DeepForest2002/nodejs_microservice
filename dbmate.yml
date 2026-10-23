@@ -1,0 +1,2 @@
+url: ENV["DATABASE_URL"]
+migrations_dir: "db/migrations"
