@@ -34,7 +34,8 @@ export async function getMe(req: Request, res: Response, next: NextFunction) {
       throw new AppError(401, "x-user-id is not present");
     }
     const user = await authService.getMeService(userId);
-    return user;
+    successResponse(res, { user }, 200);
+    console.log(user);
   } catch (err) {
     next(err);
   }
