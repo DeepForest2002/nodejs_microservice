@@ -12,6 +12,7 @@ import {
   successResponse,
 } from "shared";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import { gatewayAuth } from "./middlewares/gatewayAuth";
 config({ path: resolve(process.cwd(), ".env") });
 config({ path: resolve(process.cwd(), "../../.env") });
 
@@ -45,12 +46,14 @@ app.use("/health", (_req, res) => {
 //auth-proxy :3000/auth/login or register api gateway forward this req to :3001/auth
 
 app.use(
+  gatewayAuth,
   createProxyMiddleware({
     target: AUTH_SERVICE_URL,
     changeOrigin: true,
     pathFilter: "/auth",
   }),
 );
+
 app.use((_req, _res, next) => {
   throw new AppError(404, "No route found");
 });
