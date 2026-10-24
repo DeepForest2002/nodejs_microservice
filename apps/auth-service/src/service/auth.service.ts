@@ -1,8 +1,7 @@
 import { loginInput, registerInput } from "../schema/auth.schema";
 import { createUser, findByEmail, findById } from "../repositories/user.repo";
-import { AppError } from "shared";
+import { AppError, SignInToken } from "shared";
 import bcrypt from "bcryptjs";
-import { createJwtToken } from "../utils/jwt";
 export async function createUserService(input: registerInput) {
   const existing = await findByEmail(input.email);
   if (existing) {
@@ -31,7 +30,7 @@ export async function loginUserService(
   }
 
   // create the jwt token
-  const token = createJwtToken({ userId: user.id, role: user.role });
+  const token = SignInToken({ userId: user.id, role: user.role });
   return token;
 }
 
