@@ -18,7 +18,10 @@ config({ path: resolve(process.cwd(), "../../.env") });
 
 const PORT = process.env.API_GATEWAY_PORT || 3000;
 const AUTH_SERVICE_URL =
-  process.env.AUTH_SERVICE_URL ?? "http://localhost:3001";
+  process.env.AUTH_SERVICE_URL || "http://localhost:3001";
+
+const TASK_SERVICE_URL =
+  process.env.TASK_SERVICE_URL || "http://localhost:3002";
 
 const app = express();
 
@@ -51,6 +54,14 @@ app.use(
     target: AUTH_SERVICE_URL,
     changeOrigin: true,
     pathFilter: "/auth",
+  }),
+);
+app.use(
+  gatewayAuth,
+  createProxyMiddleware({
+    target: TASK_SERVICE_URL,
+    changeOrigin: true,
+    pathFilter: "/tasks",
   }),
 );
 

@@ -24,6 +24,16 @@ export const rbacRules: RbacRule[] = [
     path: "/auth/me",
     roles: ["user", "admin"],
   },
+  {
+    method: "POST",
+    path: "/tasks",
+    roles: ["user", "admin"],
+  },
+  {
+    method: "GET",
+    path: "/tasks",
+    roles: ["admin", "user"],
+  },
 ];
 
 /*
