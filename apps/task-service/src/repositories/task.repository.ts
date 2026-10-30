@@ -21,21 +21,26 @@ export async function getAllTasks(input: {
   limit: number;
 }): Promise<Task[] | null> {
   const pool = CreatePool();
+
   if (input.role === "admin") {
     const result = await pool.query<Task>(
-      `SELECT id, title, status, user_id, created_at FROM tasks ORDER BY created_at DESC LIMIT $1`,
+      `SELECT id, title, status, user_id, created_at
+       FROM tasks
+       ORDER BY created_at DESC LIMIT $1`,
       [input.limit],
     );
+
     return result.rows ?? null;
   }
+
   const result = await pool.query<Task>(
-    `
-        SELECT id, title, stauts, user_id, created_at
-        FROM tasks
-        WHERE user_id=$1 ORDER BY created_at DESC LIMIT $2
-        `,
+    `SELECT id, title, status, user_id, created_at
+     FROM tasks
+     WHERE user_id = $1
+     ORDER BY created_at DESC LIMIT $2`,
     [input.user_id, input.limit],
   );
+
   return result.rows ?? null;
 }
 

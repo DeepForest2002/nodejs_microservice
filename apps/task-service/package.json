@@ -2,7 +2,10 @@
   "name": "task-service",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -10,3 +10,5 @@ TaskRouter.post(
   ValidateBody(titleSchema),
   taskController.createTaskController,
 );
+
+TaskRouter.get("", taskController.getAllTaskController);

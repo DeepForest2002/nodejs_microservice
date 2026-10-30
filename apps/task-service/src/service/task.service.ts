@@ -9,3 +9,16 @@ export async function createTaskService(input: titleType, userId: string) {
   });
   return task;
 }
+
+export async function getTasksService(
+  userId: string,
+  role: string,
+  limit: number,
+) {
+  const tasks = await taskRepo.getAllTasks({
+    user_id: userId,
+    role: role,
+    limit: limit,
+  });
+  return tasks;
+}
