@@ -13,6 +13,7 @@ import {
 } from "shared";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { gatewayAuth } from "./middlewares/gatewayAuth";
+import { create } from "node:domain";
 config({ path: resolve(process.cwd(), ".env") });
 config({ path: resolve(process.cwd(), "../../.env") });
 
@@ -22,6 +23,9 @@ const AUTH_SERVICE_URL =
 
 const TASK_SERVICE_URL =
   process.env.TASK_SERVICE_URL || "http://localhost:3002";
+
+const MEDIA_SERVICE_URL =
+  process.env.MEDIA_SERVICE_URL || "http://localhost:3003";
 
 const app = express();
 
@@ -59,14 +63,40 @@ app.use(
 app.use(
   gatewayAuth,
   createProxyMiddleware({
+    target: MEDIA_SERVICE_URL,
+    changeOrigin: true,
+    pathFilter: "/media",
+  }),
+);
+app.use(
+  gatewayAuth,
+  createProxyMiddleware({
     target: TASK_SERVICE_URL,
     changeOrigin: true,
     pathFilter: "/tasks",
   }),
 );
 
+// const taskProxy = createProxyMiddleware({
+//   target: TASK_SERVICE_URL,
+//   changeOrigin: true,
+// });
+
+// const mediaProxy = createProxyMiddleware({
+//   target: MEDIA_SERVICE_URL,
+//   changeOrigin: true,
+// });
+
+// app.use(gatewayAuth, (req, res, next) => {
+//   if (req.path.includes("/attachments")) {
+//     console.log("Redirecting to media routes");
+//     return mediaProxy(req, res, next);
+//   }
+//   return taskProxy(req, res, next);
+// });
+
 app.use((_req, _res, next) => {
-  throw new AppError(404, "No route found");
+  throw new AppError(404, "No route found from api gateway");
 });
 
 app.use(errorHandler);

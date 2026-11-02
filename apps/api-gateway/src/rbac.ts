@@ -34,6 +34,11 @@ export const rbacRules: RbacRule[] = [
     path: "/tasks",
     roles: ["admin", "user"],
   },
+  {
+    method: "POST",
+    path: "/media/:taskId/attachments",
+    roles: ["admin", "user"],
+  },
 ];
 
 /*
