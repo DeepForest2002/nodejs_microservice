@@ -7,6 +7,8 @@
     "install:auth": "npm install --workspace=@nodejs-microservices/auth-service",
     "dev:auth": "npm run dev -w apps/auth-service",
     "dev:api-geteway": "npm run dev -w apps/api-gateway",
+    "dev:task": "npm run dev -w apps/task-service",
+    "dev:media": "npm run dev -w apps/media-service",
     "dbmate:up": "npx dbmate up"
   },
   "workspaces": [

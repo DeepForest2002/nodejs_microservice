@@ -25,7 +25,7 @@ app.get("/health", (req, res) => {
 app.use("/tasks", requireGatewaySecret, TaskRouter);
 
 app.use((_req, res, next) => {
-  next(new AppError(404, "Route not found"));
+  next(new AppError(404, "Route not found at task layer"));
 });
 
 app.use(errorHandler);
