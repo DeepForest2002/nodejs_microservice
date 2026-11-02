@@ -7,10 +7,15 @@ export const uploadMediaImage = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: MAX_FILE_SIZE,
+    files: 1,
   },
   fileFilter: (_req, file, callback) => {
-    if (!file.mimetype.startsWith("/image")) {
-      throw new AppError(400, "only images are allowed");
+    if (!file.mimetype.startsWith("image/")) {
+      callback(new AppError(400, "only images are allowed"));
+      return;
     }
+    callback(null, true);
   },
 });
+
+export const uploadSingleMediaImage = uploadMediaImage.single("image");

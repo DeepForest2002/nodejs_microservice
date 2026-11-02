@@ -13,3 +13,13 @@ export async function createAttachments(input: {
   );
   return result.rows[0] ?? null;
 }
+
+export async function findTaskAccessRepo(
+  taskId: string,
+): Promise<{ id: string; user_id: string } | null> {
+  const pool = CreatePool();
+  const result = await pool.query(`SELECT id, user_id FROM tasks WHERE id=$1`, [
+    taskId,
+  ]);
+  return result.rows[0] ?? null;
+}

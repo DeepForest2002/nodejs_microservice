@@ -6,8 +6,10 @@ import {
   errorHandler,
   httpLogger,
   logger,
+  requireGatewaySecret,
   successResponse,
 } from "shared";
+import { MediaRouter } from "./routes/media.routes";
 
 config({ path: resolve(process.cwd(), ".env") });
 config({ path: resolve(process.cwd(), "../../.env") });
@@ -21,8 +23,11 @@ app.get("/health", (_req, res) => {
   successResponse(res, { msg: "Media-service" });
 });
 
+console.log("Req comes here");
+app.use("/media", requireGatewaySecret, MediaRouter);
+
 app.use((_req, res, next) => {
-  next(new AppError(404, "Route not found"));
+  next(new AppError(404, "Route not found at media layer"));
 });
 
 app.use(errorHandler);
