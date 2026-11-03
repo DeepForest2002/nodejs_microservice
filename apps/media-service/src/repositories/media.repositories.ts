@@ -23,3 +23,11 @@ export async function findTaskAccessRepo(
   ]);
   return result.rows[0] ?? null;
 }
+
+export async function getAllAttachmentRepo(user_id: string) {
+  const pool = CreatePool();
+  const result = await pool.query(`SELECT *FROM attachments WHERE user_id=$1`, [
+    user_id,
+  ]);
+  return result.rows;
+}
