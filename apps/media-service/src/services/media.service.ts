@@ -11,8 +11,8 @@ async function assertTaskAccess(
   if (!task) {
     throw new AppError(404, "Task Not found");
   }
-  if (role !== "admin" && task.user_id === user_id) {
-    throw new AppError(403, "Forbidden");
+  if (role !== "admin" && task.user_id !== user_id) {
+    throw new AppError(403, "Forbidden at media level");
   }
 }
 
@@ -40,4 +40,12 @@ export async function createAttachmentsService(input: {
   });
 
   return attachment;
+}
+
+export async function getAllAttachmentService(user_id: string) {
+  const result = await mediaRepo.getAllAttachmentRepo(user_id);
+  if (!result) {
+    throw new AppError(404, "No result is found");
+  }
+  return result;
 }
