@@ -10,3 +10,5 @@ MediaRouter.post(
   uploadSingleMediaImage,
   attachmentController.uploadAttachmentController,
 );
+
+MediaRouter.get("", attachmentController.getAllAttachmentsController);
